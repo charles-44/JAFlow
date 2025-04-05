@@ -1,28 +1,28 @@
 @echo off
 setlocal ENABLEDELAYEDEXPANSION
 
-REM Vérifie si un argument a été fourni
+REM Check if an argument was provided
 if "%~1"=="" goto :noarg
 
-REM Vérifie l’existence du fichier JAR
+REM Check if the JAR file exists
 if not exist ".\target\shell-tools-1.0-SNAPSHOT-jar-with-dependencies.jar" (
-    echo Le fichier JAR n'existe pas, construction avec Maven...
+    echo JAR file not found, building with Maven...
     mvn clean package
 )
 
-REM Si l’argument est rebuild, on force le clean/package
+REM If the argument is "rebuild", force rebuild
 if /i "%~1"=="rebuild" (
-    echo Reconstruction du projet avec Maven...
+    echo Rebuilding the project with Maven...
     mvn clean package
     goto :eof
 )
 
-REM Traitement normal : construire le nom de la classe
+REM Normal execution: compute the class name
 set "ARG=%~1"
 set "FIRST_LETTER=%ARG:~0,1%"
 set "REMAINDER=%ARG:~1%"
 
-REM Convertir la première lettre en majuscule (si possible)
+REM Convert the first letter to uppercase (if possible)
 set "FIRST_LETTER_UC=%FIRST_LETTER%"
 for %%A in (A B C D E F G H I J K L M N O P Q R S T U V W X Y Z) do (
     if /I "%FIRST_LETTER%"=="%%A" set "FIRST_LETTER_UC=%%A"
@@ -30,7 +30,7 @@ for %%A in (A B C D E F G H I J K L M N O P Q R S T U V W X Y Z) do (
 
 set "CLASS_NAME=org.scem.command.%FIRST_LETTER_UC%%REMAINDER%Commands"
 
-REM Récupère tous les paramètres sauf le premier
+REM Get all arguments except the first one
 set "ARGS="
 set i=2
 :loop
@@ -42,8 +42,8 @@ if defined arg (
 )
 
 echo.
-echo Lancement de la commande avec la classe : %CLASS_NAME%
-echo Paramètres passés à la classe : %ARGS%
+echo Running command with class: %CLASS_NAME%
+echo Arguments passed to the class: %ARGS%
 echo.
 
 java -cp ".\target\shell-tools-1.0-SNAPSHOT-jar-with-dependencies.jar" %CLASS_NAME% %ARGS%
@@ -51,6 +51,6 @@ goto :eof
 
 :noarg
 echo.
-echo [ERREUR] Argument manquant.
+echo [ERROR] Missing argument.
 echo Usage: run.cmd [rebuild|<commandName> [args...]]
 exit /b 1
