@@ -1,0 +1,111 @@
+{
+  "realm": "dc-comics",
+  "enabled": true,
+  "users": [
+    {
+      "username": "bruce.wayne",
+      "firstName": "Bruce",
+      "lastName": "Wayne",
+      "enabled": true,
+      "credentials": [{ "type": "password", "value": "batman" }]
+    },
+    {
+      "username": "clark.kent",
+      "firstName": "Clark",
+      "lastName": "Kent",
+      "enabled": true,
+      "credentials": [{ "type": "password", "value": "superman" }]
+    },
+    {
+      "username": "diana.prince",
+      "firstName": "Diana",
+      "lastName": "Prince",
+      "enabled": true,
+      "credentials": [{ "type": "password", "value": "wonderwoman" }]
+    },
+    {
+      "username": "barry.allen",
+      "firstName": "Barry",
+      "lastName": "Allen",
+      "enabled": true,
+      "credentials": [{ "type": "password", "value": "flash" }]
+    },
+    {
+      "username": "hal.jordan",
+      "firstName": "Hal",
+      "lastName": "Jordan",
+      "enabled": true,
+      "credentials": [{ "type": "password", "value": "greenlantern" }]
+    },
+    {
+      "username": "arthur.curry",
+      "firstName": "Arthur",
+      "lastName": "Curry",
+      "enabled": true,
+      "credentials": [{ "type": "password", "value": "aquaman" }]
+    },
+    {
+      "username": "victor.stone",
+      "firstName": "Victor",
+      "lastName": "Stone",
+      "enabled": true,
+      "credentials": [{ "type": "password", "value": "cyborg" }]
+    },
+    {
+      "username": "selina.kyle",
+      "firstName": "Selina",
+      "lastName": "Kyle",
+      "enabled": true,
+      "credentials": [{ "type": "password", "value": "catwoman" }]
+    },
+    {
+      "username": "harleen.quinzel",
+      "firstName": "Harleen",
+      "lastName": "Quinzel",
+      "enabled": true,
+      "credentials": [{ "type": "password", "value": "harley" }]
+    },
+    {
+      "username": "pamela.isley",
+      "firstName": "Pamela",
+      "lastName": "Isley",
+      "enabled": true,
+      "credentials": [{ "type": "password", "value": "ivy" }]
+    },
+    {
+      "username": "slade.wilson",
+      "firstName": "Slade",
+      "lastName": "Wilson",
+      "enabled": true,
+      "credentials": [{ "type": "password", "value": "deathstroke" }]
+    },
+    {
+      "username": "lex.luthor",
+      "firstName": "Lex",
+      "lastName": "Luthor",
+      "enabled": true,
+      "credentials": [{ "type": "password", "value": "luthor" }]
+    },
+    {
+      "username": "jon.jonzz",
+      "firstName": "J'onn",
+      "lastName": "J'onzz",
+      "enabled": true,
+      "credentials": [{ "type": "password", "value": "martian" }]
+    },
+    {
+      "username": "billy.batson",
+      "firstName": "Billy",
+      "lastName": "Batson",
+      "enabled": true,
+      "credentials": [{ "type": "password", "value": "shazam" }]
+    },
+    {
+      "username": "karen.starr",
+      "firstName": "Karen",
+      "lastName": "Starr",
+      "enabled": true,
+      "credentials": [{ "type": "password", "value": "powergirl" }]
+    }
+  ]
+}
