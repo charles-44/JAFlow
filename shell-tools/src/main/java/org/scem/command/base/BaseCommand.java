@@ -19,16 +19,23 @@ public abstract class BaseCommand {
 
     protected void executeCommand(File directory, String... command) {
         try {
-            this.getLogger().info("Execute command: {}", String.join(" ", command));
-            this.getLogger().info("Execute command in {}", directory.getAbsolutePath());
+            if (this.getLogger().isInfoEnabled()) {
+                this.getLogger().info("Execute command: {}", String.join(" ", command));
+                this.getLogger().info("Execute command in {}", directory.getAbsolutePath());
+            }
             ProcessBuilder pb = new ProcessBuilder(command);
             pb.directory(directory);
             pb.inheritIO();
             Process process = pb.start();
             int exitCode = process.waitFor();
-            this.getLogger().info("Command finished (code {})", exitCode);
-        } catch (InterruptedException | IOException e) {
-            this.getLogger().error("Error : {}", e.getMessage());
+            if (this.getLogger().isInfoEnabled()) {
+                this.getLogger().info("Command finished (code {})", exitCode);
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // ✅ signaler l'interruption
+            this.getLogger().error("Command interrupted: {}", e.getMessage());
+        } catch (IOException e) {
+            this.getLogger().error("I/O error while executing command: {}", e.getMessage());
         }
     }
 }

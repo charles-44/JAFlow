@@ -3,12 +3,12 @@ package org.scem.command.document.updater;
 import org.reflections.Reflections;
 import org.scem.command.base.DocumentationBaseCommand;
 import org.scem.command.constante.SubProject;
+import org.scem.command.exception.ExecutionCommandException;
 import org.scem.command.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,15 +23,16 @@ public class UpdateShellToolsDocumentation extends DocumentationBaseCommand impl
 
     @Override
     public void run() {
-        String packageToScan = "org.scem.command";
-        Reflections reflections = new Reflections(packageToScan);
+        try {
 
-        Set<Class<?>> classes = reflections.getTypesAnnotatedWith(CommandLine.Command.class).stream().filter(aClass -> aClass.getPackageName().equals(packageToScan)).collect(Collectors.toSet());
+            String packageToScan = "org.scem.command";
+            Reflections reflections = new Reflections(packageToScan);
 
-        StringBuilder content = new StringBuilder();
+            Set<Class<?>> classes = reflections.getTypesAnnotatedWith(CommandLine.Command.class).stream().filter(aClass -> aClass.getPackageName().equals(packageToScan)).collect(Collectors.toSet());
 
-        for (Class<?> clazz : classes) {
-            try {
+            StringBuilder content = new StringBuilder();
+
+            for (Class<?> clazz : classes) {
                 Object cmdObj = clazz.getConstructors()[0].newInstance();
                 CommandLine cmd = new CommandLine(cmdObj);
                 String helpText = cmd.getUsageMessage(CommandLine.Help.Ansi.OFF);
@@ -44,15 +45,10 @@ public class UpdateShellToolsDocumentation extends DocumentationBaseCommand impl
                 content.append("\n```\n");
                 content.append(helpText);
                 content.append("\n```\n");
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                throw new RuntimeException(e);
             }
-        }
-
-        try {
             replaceInReadme("AUTO_GENERATED_COMMAND", content.toString());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new ExecutionCommandException("Failed to execute UpdateShellToolsDocumentation", e);
         }
 
     }

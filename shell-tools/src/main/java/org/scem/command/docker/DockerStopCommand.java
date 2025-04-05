@@ -1,6 +1,5 @@
 package org.scem.command.docker;
 
-import java.io.IOException;
 
 import org.scem.command.base.BaseCommand;
 import org.slf4j.Logger;

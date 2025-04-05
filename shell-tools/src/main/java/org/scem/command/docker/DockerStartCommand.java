@@ -1,8 +1,7 @@
 package org.scem.command.docker;
 
 import org.scem.command.base.BaseCommand;
-import org.scem.command.model.docker.DockerComposeFile;
-import org.scem.command.util.DockerUtils;
+import org.scem.command.exception.ExecutionCommandException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine.Command;
@@ -19,7 +18,7 @@ public class DockerStartCommand extends BaseCommand implements Runnable {
          this.executeCommand("docker compose up -d");
          (new DockerTailCommand()).run();
       } catch (Exception e) {
-         throw new RuntimeException(e);
+         throw new ExecutionCommandException("Failed to execute DockerStartCommand" , e);
       }
    }
 

@@ -1,7 +1,7 @@
 package org.scem.command.base;
 
 import org.scem.command.constante.SubProject;
-import org.slf4j.Logger;
+import org.scem.command.exception.FileCreationException;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +20,7 @@ public abstract class DocumentationBaseCommand extends BaseCommand {
         if (!file.exists()){
             boolean isCreated = file.createNewFile();
             if (!isCreated){
-                throw new RuntimeException("Error while create file: " + file.getAbsolutePath());
+                throw new FileCreationException(file);
             }
         }
         return file;
