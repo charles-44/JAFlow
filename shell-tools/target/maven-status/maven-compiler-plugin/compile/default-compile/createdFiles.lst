@@ -1,9 +1,0 @@
-org\scem\command\docker\DockerStopCommand.class
-org\scem\command\util\DockerUtils.class
-org\scem\command\DockerCommands.class
-org\scem\command\docker\DockerStartCommand.class
-org\scem\command\docker\DockerTailCommand.class
-org\scem\command\base\BaseCommand.class
-org\scem\command\docker\DockerPurgeCommand.class
-org\scem\command\model\docker\Service.class
-org\scem\command\model\docker\DockerComposeFile.class

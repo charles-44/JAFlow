@@ -1,9 +1,0 @@
-D:\work\projects\playground\shell-tools\src\main\java\org\scem\command\base\BaseCommand.java
-D:\work\projects\playground\shell-tools\src\main\java\org\scem\command\docker\DockerPurgeCommand.java
-D:\work\projects\playground\shell-tools\src\main\java\org\scem\command\docker\DockerStartCommand.java
-D:\work\projects\playground\shell-tools\src\main\java\org\scem\command\docker\DockerStopCommand.java
-D:\work\projects\playground\shell-tools\src\main\java\org\scem\command\docker\DockerTailCommand.java
-D:\work\projects\playground\shell-tools\src\main\java\org\scem\command\DockerCommands.java
-D:\work\projects\playground\shell-tools\src\main\java\org\scem\command\model\docker\DockerComposeFile.java
-D:\work\projects\playground\shell-tools\src\main\java\org\scem\command\model\docker\Service.java
-D:\work\projects\playground\shell-tools\src\main\java\org\scem\command\util\DockerUtils.java
