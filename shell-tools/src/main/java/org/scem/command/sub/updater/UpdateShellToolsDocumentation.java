@@ -1,4 +1,4 @@
-package org.scem.command.document.updater;
+package org.scem.command.sub.updater;
 
 import org.reflections.Reflections;
 import org.scem.command.base.DocumentationBaseCommand;
@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -58,11 +57,6 @@ public class UpdateShellToolsDocumentation extends DocumentationBaseCommand impl
         return logger;
     }
 
-
-    public static void main(String[] args) {
-        UpdateShellToolsDocumentation cmd = new UpdateShellToolsDocumentation();
-        cmd.run();
-    }
 
     @Override
     public SubProject getSubProject() {

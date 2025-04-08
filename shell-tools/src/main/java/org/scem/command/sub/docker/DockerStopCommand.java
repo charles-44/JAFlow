@@ -1,10 +1,13 @@
-package org.scem.command.docker;
+package org.scem.command.sub.docker;
 
 
 import org.scem.command.base.BaseCommand;
+import org.scem.command.exception.ExecutionCommandException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine.Command;
+
+import java.io.IOException;
 
 @Command(
    name = "stop",
@@ -16,7 +19,11 @@ public class DockerStopCommand extends BaseCommand  implements Runnable {
 
 
    public void run() {
-      this.executeCommand("docker", "compose", "down");
+       try {
+           this.executeCommand("docker", "compose", "down");
+       } catch (IOException e) {
+          throw new ExecutionCommandException("Failed to stop docker compose project" , e);
+       }
    }
 
    @Override

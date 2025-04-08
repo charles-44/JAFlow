@@ -23,6 +23,16 @@ run.cmd rebuild
 ## Commands
 
 <!-- START_AUTO_GENERATED_COMMAND -->
+Commande: ./run.cmd updateDoc ? ? ?
+```
+Usage: updateDoc [-hV] [COMMAND]
+CLI tool to update documentation
+  -h, --help      Show this help message and exit.
+  -V, --version   Print version information and exit.
+Commands:
+  shell  update shell tools documentation
+
+```
 Commande: ./run.cmd docker ? ? ?
 ```
 Usage: docker [-hV] [COMMAND]
@@ -36,18 +46,10 @@ Commands:
   purge  Stop dockers & remove volumes
 
 ```
-Commande: ./run.cmd updateDoc ? ? ?
-```
-Usage: updateDoc [-hV] [COMMAND]
-CLI tool to update documentation
-  -h, --help      Show this help message and exit.
-  -V, --version   Print version information and exit.
-Commands:
-  shell  update shell tools documentation
-
-```
 
 <!-- END_AUTO_GENERATED_COMMAND -->
+
+
 
 
 

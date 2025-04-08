@@ -1,23 +1,21 @@
+
 package org.scem.command.base;
+
+import org.scem.command.util.FileUtils;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
 
-import org.slf4j.Logger;
-
 public abstract class BaseCommand {
     public abstract Logger getLogger();
 
-    public File getProjectDirectory() {
-        return (new File(System.getProperty("user.dir"))).getParentFile();
-    }
-
-    protected void executeCommand(String... command) {
-        File parentFile = this.getProjectDirectory();
+    public void executeCommand(String... command) throws IOException {
+        File parentFile = FileUtils.getRootProjectDirectory();
         this.executeCommand(parentFile, command);
     }
 
-    protected void executeCommand(File directory, String... command) {
+    protected void executeCommand(File directory, String... command) throws IOException {
         try {
             if (this.getLogger().isInfoEnabled()) {
                 this.getLogger().info("Execute command: {}", String.join(" ", command));

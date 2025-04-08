@@ -1,4 +1,4 @@
-package org.scem.command.docker;
+package org.scem.command.sub.docker;
 
 import org.scem.command.base.BaseCommand;
 import org.scem.command.exception.ExecutionCommandException;

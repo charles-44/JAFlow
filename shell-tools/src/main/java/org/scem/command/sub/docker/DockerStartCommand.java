@@ -1,4 +1,4 @@
-package org.scem.command.docker;
+package org.scem.command.sub.docker;
 
 import org.scem.command.base.BaseCommand;
 import org.scem.command.exception.ExecutionCommandException;
@@ -15,7 +15,7 @@ public class DockerStartCommand extends BaseCommand implements Runnable {
 
    public void run() {
       try {
-         this.executeCommand("docker compose up -d");
+         this.executeCommand("docker","compose","up","-d");
          (new DockerTailCommand()).run();
       } catch (Exception e) {
          throw new ExecutionCommandException("Failed to execute DockerStartCommand" , e);

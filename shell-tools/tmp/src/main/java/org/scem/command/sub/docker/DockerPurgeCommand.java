@@ -1,11 +1,13 @@
-package org.scem.command.docker;
+package org.scem.command.sub.docker;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.scem.command.base.BaseCommand;
 import org.scem.command.exception.ExecutionCommandException;
 import org.scem.command.model.docker.DockerComposeFile;
 import org.scem.command.util.DockerUtils;
+import org.scem.command.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine.Command;
@@ -19,13 +21,17 @@ public class DockerPurgeCommand extends BaseCommand implements Runnable {
 
     public void run() {
         try {
-            File directory = this.getProjectDirectory();
+            File directory = FileUtils.getRootProjectDirectory();
             String volumePrefix =  directory.getName().toLowerCase() + "_";
             DockerComposeFile dcFile = DockerUtils.getDockerCompose(directory);
             (new DockerStopCommand()).run();
             dcFile.getVolumes().keySet().forEach(v -> {
                 logger.info("Removing volume {}", v);
-                this.executeCommand("docker volume rm " + volumePrefix + v );
+                try {
+                    this.executeCommand("docker volume rm " + volumePrefix + v );
+                } catch (IOException e) {
+                    throw new ExecutionCommandException("Unable to purge volume",e);
+                }
             });
         } catch (Exception e) {
             throw new ExecutionCommandException("Failed to execute DockerPurgeCommand" , e);

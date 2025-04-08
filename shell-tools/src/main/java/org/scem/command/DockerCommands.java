@@ -1,9 +1,9 @@
 package org.scem.command;
 
-import org.scem.command.docker.DockerPurgeCommand;
-import org.scem.command.docker.DockerStartCommand;
-import org.scem.command.docker.DockerStopCommand;
-import org.scem.command.docker.DockerTailCommand;
+import org.scem.command.sub.docker.DockerPurgeCommand;
+import org.scem.command.sub.docker.DockerStartCommand;
+import org.scem.command.sub.docker.DockerStopCommand;
+import org.scem.command.sub.docker.DockerTailCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
@@ -25,8 +25,7 @@ public class DockerCommands implements Runnable {
     }
 
     public static void main(String[] args) {
-        int exitCode = (new CommandLine(new DockerCommands())).execute(args);
-        System.exit(exitCode);
+        System.exit ((new CommandLine(new DockerCommands())).execute(args));
     }
 
 }
