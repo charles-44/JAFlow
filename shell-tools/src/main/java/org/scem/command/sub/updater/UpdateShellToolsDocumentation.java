@@ -1,6 +1,7 @@
 package org.scem.command.sub.updater;
 
 import org.reflections.Reflections;
+import org.scem.command.HelpCommands;
 import org.scem.command.base.DocumentationBaseCommand;
 import org.scem.command.client.SonarQubeClient;
 import org.scem.command.constante.SubProject;
@@ -41,30 +42,9 @@ public class UpdateShellToolsDocumentation extends DocumentationBaseCommand impl
                     "-Dsonar.token=" + sonarToken);
 
             logger.info("Start update shell tools documentation");
-            String packageToScan = "org.scem.command";
-            Reflections reflections = new Reflections(packageToScan);
 
-            Set<Class<?>> classes = reflections.getTypesAnnotatedWith(CommandLine.Command.class).stream().filter(aClass -> aClass.getPackageName().equals(packageToScan)).collect(Collectors.toSet());
-
-            StringBuilder content = new StringBuilder();
-
-            for (Class<?> clazz : classes) {
-                Object cmdObj = clazz.getConstructors()[0].newInstance();
-                CommandLine cmd = new CommandLine(cmdObj);
-                String helpText = cmd.getUsageMessage(CommandLine.Help.Ansi.OFF);
-
-                String name = StringUtils.lowercaseFirstLetter(clazz.getSimpleName());
-                name = name.substring(0, name.length() - "Commands".length());
-
-                content.append("Commande: ./run.cmd ").append(name).append(" ? ? ?");
-
-                content.append("\n```\n");
-                content.append(helpText);
-                content.append("\n```\n");
-            }
-            replaceInReadme("AUTO_GENERATED_COMMAND", content.toString());
+            replaceInReadme("AUTO_GENERATED_COMMAND", HelpCommands.getHelpCommands("\n```\n"));
             logger.info("Finish update shell tools documentation for help");
-
 
             StringBuilder sonarQubeContent = new StringBuilder("\n");
             SonarQubeClient client = SonarQubeClient.getSonarQubeClient("shell-tools");

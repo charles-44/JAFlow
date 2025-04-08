@@ -1,9 +1,11 @@
 package org.scem.command.sub.updater;
 
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import org.scem.command.HelpCommands;
 import org.scem.command.client.SonarQubeClient;
 import org.scem.command.constante.SubProject;
 import org.scem.command.exception.ExecutionCommandException;
@@ -11,80 +13,88 @@ import org.scem.command.util.FileUtils;
 import org.slf4j.Logger;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@DisplayName("UpdateShellToolsDocumentation Test")
 class UpdateShellToolsDocumentationTest {
 
+    private UpdateShellToolsDocumentation command;
+
+    @BeforeEach
+    void setUp() {
+        command = spy(new UpdateShellToolsDocumentation());
+    }
+
     @Test
-    @DisplayName("getLogger should return non-null logger")
-    void getLogger_shouldReturnLogger() {
-        UpdateShellToolsDocumentation command = new UpdateShellToolsDocumentation();
+    void testGetLoggerShouldReturnNonNullLogger() {
         Logger logger = command.getLogger();
         assertNotNull(logger);
     }
 
     @Test
-    @DisplayName("getSubProject should return SHELL")
-    void getSubProject_shouldReturnSHELL() {
-        UpdateShellToolsDocumentation command = new UpdateShellToolsDocumentation();
+    void testGetSubProjectShouldReturnShell() {
         assertEquals(SubProject.SHELL, command.getSubProject());
     }
 
     @Test
-    @DisplayName("run should throw ExecutionCommandException when exception occurs")
-    void run_shouldThrowExecutionCommandException() {
-        UpdateShellToolsDocumentation command = new UpdateShellToolsDocumentation() {
-            @Override
-            public void run() {
-                throw new ExecutionCommandException("Simulated exception");
-            }
-        };
+    void testRunSuccessfullyUpdatesDocumentation() throws IOException {
+        try (
+                MockedStatic<FileUtils> fileUtilsMock = Mockito.mockStatic(FileUtils.class);
+                MockedStatic<HelpCommands> helpCommandsMock = Mockito.mockStatic(HelpCommands.class);
+                MockedStatic<SonarQubeClient> sonarClientStatic = Mockito.mockStatic(SonarQubeClient.class)
+        ) {
+            File mockFile = mock(File.class);
+            File parentFile = mock(File.class);
+            when(mockFile.getParentFile()).thenReturn(parentFile);
+            doReturn(mockFile).when(command).getSubProjectReadme();
 
-        ExecutionCommandException exception = assertThrows(
-                ExecutionCommandException.class,
-                command::run
-        );
+            fileUtilsMock.when(() -> FileUtils.getPrivateProperties("sonar.project.shell.token"))
+                    .thenReturn("dummy-token");
+            fileUtilsMock.when(() -> FileUtils.getPrivateProperties("maven.bin.path"))
+                    .thenReturn("/usr/bin/mvn");
+            fileUtilsMock.when(() -> FileUtils.getPrivateProperties("sonar.host.url"))
+                    .thenReturn("http://localhost:9000");
 
-        assertEquals("Simulated exception", exception.getMessage());
+            helpCommandsMock.when(() -> HelpCommands.getHelpCommands("\n```\n"))
+                    .thenReturn("mock-help-content");
+
+            SonarQubeClient sonarClient = mock(SonarQubeClient.class);
+            Map<String, String> mockMetrics = new HashMap<>();
+            mockMetrics.put("coverage", "95%");
+            mockMetrics.put("bugs", "0");
+            when(sonarClient.fetchMetrics()).thenReturn(mockMetrics);
+
+            sonarClientStatic.when(() -> SonarQubeClient.getSonarQubeClient("shell-tools"))
+                    .thenReturn(sonarClient);
+
+            doNothing().when(command).executeCommand(any(), any(), any(), any(), any(), any(), any(), any(), any());
+            doReturn(mockFile).when(command).replaceInReadme(any(), any());
+
+            assertDoesNotThrow(() -> command.run());
+
+            verify(command, times(1)).replaceInReadme(eq("AUTO_GENERATED_COMMAND"), eq("mock-help-content"));
+            verify(command, times(1)).replaceInReadme(eq("AUTO_GENERATED_SONARQUBE_REPORT"), contains("coverage"));
+        }
     }
 
     @Test
-    @DisplayName("run should execute without exceptions when all dependencies mocked")
-    void run_shouldExecuteWithoutErrors() throws Exception {
-        UpdateShellToolsDocumentation command = new UpdateShellToolsDocumentation() {
+    void testRunThrowsExecutionCommandExceptionWhenExceptionOccurs() throws IOException {
+        doThrow(new RuntimeException("Mock failure")).when(command).getSubProjectReadme();
+
+        ExecutionCommandException thrown = assertThrows(ExecutionCommandException.class, new Executable() {
             @Override
-            public File getSubProjectReadme() {
-                return new File("README.md");
+            public void execute() {
+                command.run();
             }
+        });
 
-            @Override
-            public void executeCommand(File directory, String... command) {
-                // no-op
-            }
-        };
-
-        try (
-                MockedStatic<FileUtils> fileUtilsMock = Mockito.mockStatic(FileUtils.class);
-                MockedStatic<SonarQubeClient> sonarQubeClientMock = Mockito.mockStatic(SonarQubeClient.class)
-        ) {
-            fileUtilsMock.when(() -> FileUtils.getPrivateProperties(anyString()))
-                    .thenReturn("mocked");
-
-            SonarQubeClient mockClient = mock(SonarQubeClient.class);
-            when(mockClient.fetchMetrics()).thenReturn(Map.of(
-                    "coverage", "95.0",
-                    "bugs", "0",
-                    "code_smells", "5"
-            ));
-
-            sonarQubeClientMock.when(() -> SonarQubeClient.getSonarQubeClient("shell-tools"))
-                    .thenReturn(mockClient);
-
-            assertDoesNotThrow(command::run);
-        }
+        assertTrue(thrown.getMessage().contains("Failed to execute UpdateShellToolsDocumentation"));
+        assertNotNull(thrown.getCause());
+        assertEquals("Mock failure", thrown.getCause().getMessage());
     }
+
 }
