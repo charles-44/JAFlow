@@ -42,7 +42,7 @@ public abstract class DocumentationBaseCommand extends BaseCommand {
         String result = content.substring(0, content.indexOf(startDelimiter)) +
                 startDelimiter + "\n"+
                 contentToPut + "\n" +
-                endDelimiter + "\n" +
+                endDelimiter  +
                 content.substring(content.indexOf(endDelimiter) + endDelimiter.length());
 
         Files.writeString(readmeFile.toPath(), result, StandardCharsets.UTF_8);

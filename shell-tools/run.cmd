@@ -7,13 +7,13 @@ if "%~1"=="" goto :noarg
 REM Check if the JAR file exists
 if not exist ".\target\shell-tools-1.0-SNAPSHOT-jar-with-dependencies.jar" (
     echo JAR file not found, building with Maven...
-    mvn clean package
+    mvn clean package -DskipTests
 )
 
 REM If the argument is "rebuild", force rebuild
 if /i "%~1"=="rebuild" (
     echo Rebuilding the project with Maven...
-    mvn clean package
+    mvn clean package -DskipTests
     goto :eof
 )
 
@@ -46,7 +46,13 @@ echo Running command with class: %CLASS_NAME%
 echo Arguments passed to the class: %ARGS%
 echo.
 
-java -cp ".\target\shell-tools-1.0-SNAPSHOT-jar-with-dependencies.jar" %CLASS_NAME% %ARGS%
+if exist ".\shell-tools-1.0-SNAPSHOT-jar-with-dependencies.jar" (
+    rm .\shell-tools-1.0-SNAPSHOT-jar-with-dependencies.jar
+)
+
+cp ".\target\shell-tools-1.0-SNAPSHOT-jar-with-dependencies.jar" ".\shell-tools-1.0-SNAPSHOT-jar-with-dependencies.jar"
+java -cp ".\shell-tools-1.0-SNAPSHOT-jar-with-dependencies.jar" %CLASS_NAME% %ARGS%
+rm .\shell-tools-1.0-SNAPSHOT-jar-with-dependencies.jar
 goto :eof
 
 :noarg

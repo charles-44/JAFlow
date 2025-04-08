@@ -53,14 +53,19 @@ Commands:
 
 <!-- START_AUTO_GENERATED_SONARQUBE_REPORT -->
 
+- coverage: 93.3
+- alert_status: OK
+- bugs: 0
+- reliability_rating: 1.0
+- code_smells: 0
+- duplicated_lines_density: 0.0
+- security_rating: 1.0
+- ncloc: 674
+- vulnerabilities: 0
+- security_hotspots: 0
+- sqale_rating: 1.0
+
 <!-- END_AUTO_GENERATED_SONARQUBE_REPORT -->
-
-
-
-
-
-
-
 
 ## Development
 
