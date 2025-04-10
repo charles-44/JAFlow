@@ -16,7 +16,7 @@ import java.io.IOException;
         name = "purge",
         description = {"Stop dockers & remove volumes"}
 )
-public abstract class DockerPurgeCommand extends BaseCommand implements Runnable {
+public class DockerPurgeCommand extends BaseCommand implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(DockerPurgeCommand.class);
 
     public void run() {
@@ -42,5 +42,4 @@ public abstract class DockerPurgeCommand extends BaseCommand implements Runnable
         return logger;
     }
 
-    public abstract void executeCommand(String command) throws IOException;
 }

@@ -3,6 +3,7 @@ package org.scem.workflow.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 import org.scem.workflow.enumeration.StepType;
 
 import java.util.ArrayList;
@@ -23,14 +24,11 @@ public class StepDefinition extends BasePermissionDefinition{
     @Enumerated(EnumType.STRING)
     private StepType type;
 
+    @Column(name = "start")
+    private boolean start = false;
 
     @Column(name = "duration_days")
     private int durationDays;
-
-
-
-
-
 
     // Action → Etape suivante
     @OneToMany

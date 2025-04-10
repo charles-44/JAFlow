@@ -2,7 +2,7 @@ package org.scem.command.sub.docker;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+import org.mockito.MockedConstruction;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.scem.command.exception.ExecutionCommandException;
@@ -12,122 +12,101 @@ import org.scem.command.util.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class DockerPurgeCommandTest {
 
-    private DockerPurgeCommand dockerPurgeCommand;
+    private DockerPurgeCommand command;
 
     @BeforeEach
     void setUp() {
-        dockerPurgeCommand = new DockerPurgeCommand() {
-            @Override
-            public void executeCommand(String command) throws IOException {
-                // no-op for test
-            }
-        };
+        command = Mockito.spy(new DockerPurgeCommand());
     }
 
     @Test
-    void testRunSuccessfullyRemovesVolumes(@TempDir Path tempDir) {
-        File mockDir = tempDir.toFile();
-        mockDir.mkdir();
+    void testGetLoggerShouldReturnNonNullLogger() {
+        assertNotNull(command.getLogger());
+    }
 
-        DockerComposeFile mockDockerComposeFile = Mockito.mock(DockerComposeFile.class);
-        Map<String, Object> volumes = Collections.singletonMap("volume1", new Object());
-
+    @Test
+    void testRunShouldExecuteVolumePurgeSuccessfully() {
         try (
-                MockedStatic<FileUtils> fileUtilsMock = Mockito.mockStatic(FileUtils.class);
-                MockedStatic<DockerUtils> dockerUtilsMock = Mockito.mockStatic(DockerUtils.class);
-                MockedStatic<DockerStopCommand> dockerStopCommandMock = Mockito.mockStatic(DockerStopCommand.class)
+                MockedStatic<FileUtils> fileUtilsMock = mockStatic(FileUtils.class);
+                MockedStatic<DockerUtils> dockerUtilsMock = mockStatic(DockerUtils.class);
+                MockedConstruction<DockerStopCommand> stopCommandMock = mockConstruction(DockerStopCommand.class)
         ) {
+            File mockDir = mock(File.class);
+            when(mockDir.getName()).thenReturn("MyProject");
             fileUtilsMock.when(FileUtils::getRootProjectDirectory).thenReturn(mockDir);
-            dockerUtilsMock.when(() -> DockerUtils.getDockerCompose(mockDir)).thenReturn(mockDockerComposeFile);
-            Mockito.when(mockDockerComposeFile.getVolumes()).thenReturn(volumes);
 
-             assertDoesNotThrow(dockerPurgeCommand::run);
-            // No exception = success
+            Map<String, Object> volumes = new LinkedHashMap<>();
+            volumes.put("db_data", new Object());
+            volumes.put("cache_data", new Object());
+
+            DockerComposeFile mockDockerCompose = mock(DockerComposeFile.class);
+            when(mockDockerCompose.getVolumes()).thenReturn(volumes);
+            dockerUtilsMock.when(() -> DockerUtils.getDockerCompose(mockDir)).thenReturn(mockDockerCompose);
+
+            doNothing().when(command).executeCommand(anyString());
+
+            assertDoesNotThrow(() -> command.run());
+
+            verify(command, times(1)).executeCommand("docker volume rm myproject_db_data");
+            verify(command, times(1)).executeCommand("docker volume rm myproject_cache_data");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @Test
-    void testRunWithIOExceptionDuringVolumeRemovalThrowsExecutionCommandException(@TempDir Path tempDir) {
-        File mockDir = tempDir.toFile();
-        mockDir.mkdir();
-
-        DockerComposeFile mockDockerComposeFile = Mockito.mock(DockerComposeFile.class);
-        Map<String, Object> volumes = Collections.singletonMap("volume1", new Object());
-
-        DockerPurgeCommand failingCommand = new DockerPurgeCommand() {
-            @Override
-            public void executeCommand(String command) throws IOException {
-                throw new IOException("Simulated failure");
-            }
-        };
-
+    void testRunShouldThrowExecutionCommandExceptionOnDockerUtilsError() {
         try (
-                MockedStatic<FileUtils> fileUtilsMock = Mockito.mockStatic(FileUtils.class);
-                MockedStatic<DockerUtils> dockerUtilsMock = Mockito.mockStatic(DockerUtils.class);
+                MockedStatic<FileUtils> fileUtilsMock = mockStatic(FileUtils.class);
+                MockedStatic<DockerUtils> dockerUtilsMock = mockStatic(DockerUtils.class)
         ) {
+            File mockDir = mock(File.class);
+            when(mockDir.getName()).thenReturn("MyProject");
             fileUtilsMock.when(FileUtils::getRootProjectDirectory).thenReturn(mockDir);
-            dockerUtilsMock.when(() -> DockerUtils.getDockerCompose(mockDir)).thenReturn(mockDockerComposeFile);
-            Mockito.when(mockDockerComposeFile.getVolumes()).thenReturn(volumes);
 
-            ExecutionCommandException exception = assertThrows(
-                    ExecutionCommandException.class,
-                    failingCommand::run
-            );
+            dockerUtilsMock.when(() -> DockerUtils.getDockerCompose(mockDir))
+                    .thenThrow(new RuntimeException("Simulated failure"));
+
+            ExecutionCommandException exception = assertThrows(ExecutionCommandException.class, command::run);
             assertTrue(exception.getMessage().contains("Failed to execute DockerPurgeCommand"));
             assertNotNull(exception.getCause());
+            assertEquals("Simulated failure", exception.getCause().getMessage());
         }
     }
 
     @Test
-    void testRunWithNullVolumesMapDoesNotThrow(@TempDir Path tempDir) {
-        File mockDir = tempDir.toFile();
-        mockDir.mkdir();
-
-        DockerComposeFile mockDockerComposeFile = Mockito.mock(DockerComposeFile.class);
-
+    void testRunShouldThrowExecutionCommandExceptionWhenVolumeRemoveFails() throws IOException {
         try (
-                MockedStatic<FileUtils> fileUtilsMock = Mockito.mockStatic(FileUtils.class);
-                MockedStatic<DockerUtils> dockerUtilsMock = Mockito.mockStatic(DockerUtils.class);
+                MockedStatic<FileUtils> fileUtilsMock = mockStatic(FileUtils.class);
+                MockedStatic<DockerUtils> dockerUtilsMock = mockStatic(DockerUtils.class);
+                MockedConstruction<DockerStopCommand> stopCommandMock = mockConstruction(DockerStopCommand.class)
         ) {
+            File mockDir = mock(File.class);
+            when(mockDir.getName()).thenReturn("MyProject");
             fileUtilsMock.when(FileUtils::getRootProjectDirectory).thenReturn(mockDir);
-            dockerUtilsMock.when(() -> DockerUtils.getDockerCompose(mockDir)).thenReturn(mockDockerComposeFile);
-            Mockito.when(mockDockerComposeFile.getVolumes()).thenReturn(Map.of());
 
-            assertDoesNotThrow(() -> dockerPurgeCommand.run());
-        }
-    }
+            Map<String, Object> volumes = Map.of("db_data", new Object());
 
-    @Test
-    void testRunWithExceptionFromGetDockerComposeThrowsExecutionCommandException(@TempDir Path tempDir) {
-        File mockDir = tempDir.toFile();
-        mockDir.mkdir();
+            DockerComposeFile mockDockerCompose = mock(DockerComposeFile.class);
+            when(mockDockerCompose.getVolumes()).thenReturn(volumes);
+            dockerUtilsMock.when(() -> DockerUtils.getDockerCompose(mockDir)).thenReturn(mockDockerCompose);
 
-        try (
-                MockedStatic<FileUtils> fileUtilsMock = Mockito.mockStatic(FileUtils.class);
-                MockedStatic<DockerUtils> dockerUtilsMock = Mockito.mockStatic(DockerUtils.class);
-        ) {
-            fileUtilsMock.when(FileUtils::getRootProjectDirectory).thenReturn(mockDir);
-            dockerUtilsMock.when(() -> DockerUtils.getDockerCompose(mockDir)).thenThrow(new RuntimeException("Docker error"));
+            doThrow(new IOException("Docker volume remove failed"))
+                    .when(command).executeCommand("docker volume rm myproject_db_data");
 
-            ExecutionCommandException exception = assertThrows(
-                    ExecutionCommandException.class,
-                    () -> dockerPurgeCommand.run()
-            );
+            ExecutionCommandException exception = assertThrows(ExecutionCommandException.class, command::run);
             assertTrue(exception.getMessage().contains("Failed to execute DockerPurgeCommand"));
             assertNotNull(exception.getCause());
+            assertEquals("Unable to purge volume", exception.getCause().getMessage());
         }
     }
 
-    @Test
-    void testGetLoggerReturnsNonNullLogger() {
-        assertNotNull(dockerPurgeCommand.getLogger());
-    }
 }
