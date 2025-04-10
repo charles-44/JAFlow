@@ -15,14 +15,15 @@ import java.util.List;
 import java.util.Map;
 
 @Configuration
-public class DataInitializer {
+    public class DataInitializer {
 
     private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
 
     @Bean
     @Transactional
     public ApplicationRunner initData(WorkflowDefinitionRepository workflowDefinitionRepository,
-                                      StepDefinitionRepository stepDefinitionRepository) {
+                                      StepDefinitionRepository stepDefinitionRepository,
+                                        StepTransitionDefinitionRepository stepTransitionDefinitionRepository) {
         return args -> {
 
             int workflowDefinitionRepositoryCount = (int) workflowDefinitionRepository.count();
@@ -77,23 +78,22 @@ public class DataInitializer {
                 refus.setLogins(List.of(SpecificUserLogin.JAFLOW_WORKFLOW_CREATOR.name()));
                 refus = stepDefinitionRepository.save(refus);
 
-                soumission.setTransitions(Map.of(
-                        "Valider",validationManager,
-                        "Refuser",refus
-                ));
-                validationManager.setTransitions(Map.of(
-                        "Valider",validationRH,
-                        "Refuser",refus
-                ));
-                validationRH.setTransitions(Map.of(
-                        "Valider",cloture,
-                        "Refuser",refus
-                ));
-
-                stepDefinitionRepository.save(soumission);
-                stepDefinitionRepository.save(validationManager);
-                stepDefinitionRepository.save(validationRH);
+                this.createTransition(stepTransitionDefinitionRepository,soumission,"Valider",validationManager);
+                this.createTransition(stepTransitionDefinitionRepository,soumission,"Refuser",refus);
+                this.createTransition(stepTransitionDefinitionRepository,validationManager,"Valider",validationRH);
+                this.createTransition(stepTransitionDefinitionRepository,validationManager,"Refuser",refus);
+                this.createTransition(stepTransitionDefinitionRepository,validationRH,"Valider",cloture);
+                this.createTransition(stepTransitionDefinitionRepository,validationRH,"Refuser",refus);
             }
         };
+    }
+
+    private void createTransition( StepTransitionDefinitionRepository stepTransitionDefinitionRepository,StepDefinition from, String label, StepDefinition to) {
+
+        StepTransitionDefinition transition = new StepTransitionDefinition();
+        transition.setFromStep(from);
+        transition.setToStep(to);
+        transition.setLabel(label);
+        stepTransitionDefinitionRepository.save(transition);
     }
 }
