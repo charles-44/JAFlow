@@ -19,7 +19,9 @@ spring:
         provider:
           keycloak:
             issuer-uri: ${jaflow.keycloak.url.protocol}://${jaflow.keycloak.url.host}:${jaflow.keycloak.url.port}/realms/${jaflow.keycloak.realm}
-
+      resourceserver:
+        jwt:
+          issuer-uri: ${jaflow.keycloak.url.protocol}://${jaflow.keycloak.url.host}:${jaflow.keycloak.url.port}/realms/${jaflow.keycloak.realm}
 
   datasource:
     url: jdbc:postgresql://${jaflow.postgres.url.host}:${jaflow.postgres.url.port}/${jaflow.postgres.url.database.workflow.name}
