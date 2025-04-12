@@ -15,12 +15,12 @@ public class StepTransitionDefinition extends  BaseEntity{
     private Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "from_step_id")
+    @JoinColumn(name = "source_step_id")
     private StepDefinition fromStep;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "to_step_id")
+    @JoinColumn(name = "target_step_id")
     private StepDefinition toStep;
 
-    private String label;
+    private String action;
 }
