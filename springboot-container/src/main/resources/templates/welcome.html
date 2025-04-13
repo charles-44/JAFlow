@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Welcome</title>
+</head>
+<body>
+
+
+<h3><b>Directory path:</b>  <span th:text="${dirPath}">undefined</span> </h3>
+<br/>
+<br/>
+<ul>
+    <li th:each="name : ${names}">
+        <a th:href="@{'/reload'(name=${name})}" th:text="${name}"></a>
+    </li>
+</ul>
+
+</body>
+
+
+
+</html>

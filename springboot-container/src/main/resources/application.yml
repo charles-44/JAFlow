@@ -1,0 +1,8 @@
+spring:
+  config:
+    import: "classpath:jaflow.properties"
+  application:
+    name: container
+
+server:
+  port: ${jaflow.container.url.port}

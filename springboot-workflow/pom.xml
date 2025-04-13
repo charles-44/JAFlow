@@ -106,6 +106,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<executable>true</executable>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.graalvm.buildtools</groupId>
@@ -163,7 +166,85 @@
 						</exclude>
 					</excludes>
 				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
+
+
+
+
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>call-kill-url</id>
+						<phase>package</phase>
+						<configuration>
+							<target>
+								<exec executable="curl">
+									<arg value="http://localhost:8081/kill?artifactId=${project.artifactId}"/>
+								</exec>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>clean-old-jars</id>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<delete>
+									<fileset dir="${project.basedir}/../docker/local-volumes/springboot-jars"
+											 includes="${project.artifactId}-*.jar"/>
+								</delete>
+							</target>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-jar</id>
+						<phase>package</phase> <!-- ou package si tu veux plus tôt -->
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<copy file="${project.build.directory}/${project.build.finalName}.jar"
+									  todir="${project.basedir}/../docker/local-volumes/springboot-jars"
+									  overwrite="true"/>
+							</target>
+						</configuration>
+					</execution>
+					<execution>
+						<id>call-launch-url</id>
+						<phase>package</phase>
+						<configuration>
+							<target>
+								<exec executable="curl">
+									<arg value="http://localhost:8081/launch?artifactId=${project.artifactId}"/>
+								</exec>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 

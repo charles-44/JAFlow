@@ -1,6 +1,6 @@
 # Configuration de base de données
 server:
-  port: 8081
+  port: ${jaflow.workflow.url.port}
 spring:
   config:
     import: "classpath:jaflow.properties"
@@ -34,3 +34,13 @@ spring:
     show-sql: true
 
 
+
+# Used by Swagger
+info:
+  title: "JAFlow Workflow API"
+  description: "Cette API permet de gérer les workflows avec intégration Keycloak"
+  version: "1.0.0"
+  contact:
+    name: "Bruce Wayne"
+    email: "bruce.wayne@example.com"
+    url: "https://ton-site.fr"

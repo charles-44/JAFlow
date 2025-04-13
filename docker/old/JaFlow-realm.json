@@ -1,0 +1,270 @@
+{
+  "realm": "JAFlow",
+  "enabled": true,
+  "users": [
+    {
+      "username": "admin",
+      "firstName": "Admin",
+      "lastName": "Istrator",
+      "enabled": true,
+      "emailVerified" : true,
+      "email" : "admin.isstrator@yopmail.com",
+      "requiredActions" : [ ],
+      "realmRoles" : [ "BASIC:ADMIN", "BASIC:USER" ],
+      "credentials": [{ "type": "password", "value": "admin" }]
+    },
+    {
+      "username": "user",
+      "firstName": "User",
+      "lastName": "Lambda",
+      "enabled": true,
+      "emailVerified" : true,
+      "email" : "user.lambda@yopmail.com",
+      "requiredActions" : [ ],
+      "realmRoles" : [ "BASIC:USER" ],
+      "credentials": [{ "type": "password", "value": "user" }]
+    },
+    {
+      "username": "bruce.wayne",
+      "firstName": "Bruce",
+      "lastName": "Wayne",
+      "enabled": true,
+      "emailVerified" : true,
+      "email" : "bruce.wayne@yopmail.com",
+      "requiredActions" : [ ],
+      "realmRoles" : [ "BASIC:ADMIN", "BASIC:USER" ],
+      "credentials": [{ "type": "password", "value": "password" }]
+    },
+    {
+      "username": "clark.kent",
+      "firstName": "Clark",
+      "lastName": "Kent",
+      "enabled": true,
+      "emailVerified" : true,
+      "email" : "clark.kent@yopmail.com",
+      "requiredActions" : [ ],
+      "realmRoles" : [ "BASIC:USER" ],
+      "credentials": [{ "type": "password", "value": "password" }]
+    },
+    {
+      "username": "diana.prince",
+      "firstName": "Diana",
+      "lastName": "Prince",
+      "enabled": true,
+      "emailVerified" : true,
+      "email" : "diana.prince@yopmail.com",
+      "requiredActions" : [ ],
+      "realmRoles" : [ "BASIC:USER" ],
+      "credentials": [{ "type": "password", "value": "password" }]
+    },
+    {
+      "username": "barry.allen",
+      "firstName": "Barry",
+      "lastName": "Allen",
+      "enabled": true,
+      "emailVerified" : true,
+      "email" : "barry.allen@yopmail.com",
+      "requiredActions" : [ ],
+      "realmRoles" : [ "BASIC:USER" ],
+      "credentials": [{ "type": "password", "value": "password" }]
+    },
+    {
+      "username": "hal.jordan",
+      "firstName": "Hal",
+      "lastName": "Jordan",
+      "enabled": true,
+      "emailVerified" : true,
+      "email" : "hal.jordan@yopmail.com",
+      "requiredActions" : [ ],
+      "realmRoles" : [ "BASIC:USER" ],
+      "credentials": [{ "type": "password", "value": "password" }]
+    },
+    {
+      "username": "arthur.curry",
+      "firstName": "Arthur",
+      "lastName": "Curry",
+      "enabled": true,
+      "emailVerified" : true,
+      "email" : "arthur.curry@yopmail.com",
+      "requiredActions" : [ ],
+      "realmRoles" : [ "BASIC:USER" ],
+      "credentials": [{ "type": "password", "value": "password" }]
+    },
+    {
+      "username": "victor.stone",
+      "firstName": "Victor",
+      "lastName": "Stone",
+      "enabled": true,
+      "emailVerified" : true,
+      "email" : "victor.stone@yopmail.com",
+      "requiredActions" : [ ],
+      "realmRoles" : [ "BASIC:USER" ],
+      "credentials": [{ "type": "password", "value": "password" }]
+    },
+    {
+      "username": "selina.kyle",
+      "firstName": "Selina",
+      "lastName": "Kyle",
+      "enabled": true,
+      "emailVerified" : true,
+      "email" : "selina.kyle@yopmail.com",
+      "requiredActions" : [ ],
+      "realmRoles" : [ "BASIC:USER" ],
+      "credentials": [{ "type": "password", "value": "password" }]
+    },
+    {
+      "username": "harleen.quinzel",
+      "firstName": "Harleen",
+      "lastName": "Quinzel",
+      "enabled": true,
+      "emailVerified" : true,
+      "email" : "harleen.quinzel@yopmail.com",
+      "requiredActions" : [ ],
+      "realmRoles" : [ "BASIC:USER" ],
+      "credentials": [{ "type": "password", "value": "password" }]
+    },
+    {
+      "username": "pamela.isley",
+      "firstName": "Pamela",
+      "lastName": "Isley",
+      "enabled": true,
+      "emailVerified" : true,
+      "email" : "pamela.isley@yopmail.com",
+      "requiredActions" : [ ],
+      "realmRoles" : [ "BASIC:USER" ],
+      "credentials": [{ "type": "password", "value": "password" }]
+    },
+    {
+      "username": "slade.wilson",
+      "firstName": "Slade",
+      "lastName": "Wilson",
+      "enabled": true,
+      "emailVerified" : true,
+      "email" : "slade.wilson@yopmail.com",
+      "requiredActions" : [ ],
+      "realmRoles" : [ "BASIC:USER" ],
+      "credentials": [{ "type": "password", "value": "password" }]
+    },
+    {
+      "username": "lex.luthor",
+      "firstName": "Lex",
+      "lastName": "Luthor",
+      "enabled": true,
+      "emailVerified" : true,
+      "email" : "lex.luthor@yopmail.com",
+      "requiredActions" : [ ],
+      "realmRoles" : [ "BASIC:USER" ],
+      "credentials": [{ "type": "password", "value": "password" }]
+    },
+    {
+      "username": "jon.jonzz",
+      "firstName": "J'onn",
+      "lastName": "J'onzz",
+      "enabled": true,
+      "emailVerified" : true,
+      "email" : "jon.jonzz@yopmail.com",
+      "requiredActions" : [ ],
+      "realmRoles" : [ "BASIC:USER" ],
+      "credentials": [{ "type": "password", "value": "password" }]
+    },
+    {
+      "username": "billy.batson",
+      "firstName": "Billy",
+      "lastName": "Batson",
+      "enabled": true,
+      "emailVerified" : true,
+      "email" : "billy.batson@yopmail.com",
+      "requiredActions" : [ ],
+      "realmRoles" : [ "BASIC:USER" ],
+      "credentials": [{ "type": "password", "value": "password" }]
+    },
+    {
+      "username": "karen.starr",
+      "firstName": "Karen",
+      "lastName": "Starr",
+      "enabled": true,
+      "emailVerified" : true,
+      "email" : "Karen.starr@yopmail.com",
+      "requiredActions" : [ ],
+      "realmRoles" : [ "BASIC:USER" ],
+      "credentials": [{ "type": "password", "value": "password" }]
+    }
+  ],
+  "roles" : {
+    "realm" : [ {
+      "name" : "BASIC:ADMIN",
+      "description" : "Can manage the application",
+      "composite" : false,
+      "clientRole" : false,
+      "attributes" : { }
+    },
+      {
+        "name" : "BASIC:USER",
+        "description" : "Can use the application",
+        "composite" : false,
+        "clientRole" : false,
+        "attributes" : { }
+      }
+    ]
+  },
+  "clients" : [
+    {
+      "clientId" : "workflow-keycloak-confidential",
+      "name" : "client_workflow-keycloak-confidential",
+      "description" : "Used by workflow springboot application",
+      "rootUrl" : "http://localhost:8081",
+      "adminUrl" : "http://localhost:8081",
+      "baseUrl" : "http://localhost:8081/",
+      "surrogateAuthRequired" : false,
+      "enabled" : true,
+      "alwaysDisplayInConsole" : false,
+      "clientAuthenticatorType" : "client-secret",
+      "secret" : "secret",
+      "redirectUris" : [ "http://localhost:8081/login/oauth2/code/keycloak" ],
+      "webOrigins" : [ "+" ],
+      "notBefore" : 0,
+      "bearerOnly" : false,
+      "consentRequired" : false,
+      "standardFlowEnabled" : true,
+      "implicitFlowEnabled" : false,
+      "directAccessGrantsEnabled" : false,
+      "serviceAccountsEnabled" : false,
+      "publicClient" : false,
+      "frontchannelLogout" : false,
+      "protocol" : "openid-connect",
+      "attributes" : {
+        "oidc.ciba.grant.enabled" : "false",
+        "client.secret.creation.time" : "1721505129",
+        "backchannel.logout.session.required" : "true",
+        "backchannel.logout.url" : "http://host.docker.internal:8081/logout/connect/back-channel/keycloak",
+        "post.logout.redirect.uris" : "http://localhost:8081/",
+        "oauth2.device.authorization.grant.enabled" : "false",
+        "display.on.consent.screen" : "false",
+        "backchannel.logout.revoke.offline.tokens" : "false"
+      },
+      "authenticationFlowBindingOverrides" : { },
+      "fullScopeAllowed" : true,
+      "nodeReRegistrationTimeout" : -1,
+      "protocolMappers" : [ {
+        "name" : "realm roles",
+        "protocol" : "openid-connect",
+        "protocolMapper" : "oidc-usermodel-realm-role-mapper",
+        "consentRequired" : false,
+        "config" : {
+          "introspection.token.claim" : "true",
+          "multivalued" : "true",
+          "userinfo.token.claim" : "false",
+          "user.attribute" : "foo",
+          "id.token.claim" : "true",
+          "lightweight.claim" : "false",
+          "access.token.claim" : "true",
+          "claim.name" : "realm_access.roles",
+          "jsonType.label" : "String"
+        }
+      } ],
+      "defaultClientScopes" : [ "web-origins", "acr", "profile", "roles", "email" ],
+      "optionalClientScopes" : [ "address", "phone", "offline_access", "microprofile-jwt" ]
+    }
+
+  ]
+}
