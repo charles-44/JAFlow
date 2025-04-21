@@ -1,11 +1,29 @@
 # Configuration de base de données
 server:
   port: ${jaflow.workflow.url.port}
+  servlet:
+    context-path: ${jaflow.workflow.url.context.path}
+
+
+logging:
+  file:
+    path: /var/log/${jaflow.workflow.application.name}/
+    name: jaflow-${jaflow.workflow.application.name}.log
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.boot.autoconfigure.web: DEBUG
+    org.apache.catalina: DEBUG
+    org.apache.coyote: DEBUG
+    org.apache.tomcat: DEBUG
+    org.springframework.security: DEBUG
+
+
 spring:
   config:
     import: "classpath:jaflow.properties"
   application:
-    name: workflow
+    name: ${jaflow.workflow.application.name}
   security:
     oauth2:
       client:
@@ -18,22 +36,27 @@ spring:
             scope: openid, profile, email
         provider:
           keycloak:
-            issuer-uri: ${jaflow.keycloak.url.protocol}://${jaflow.keycloak.url.host}:${jaflow.keycloak.url.port}/realms/${jaflow.keycloak.realm}
+            issuer-uri: ${jaflow.keycloak.url.protocol}://${jaflow.keycloak.url.host}:${jaflow.keycloak.url.port}/${jaflow.keycloak.url.directory}/realms/${jaflow.keycloak.realm}
       resourceserver:
         jwt:
-          issuer-uri: ${jaflow.keycloak.url.protocol}://${jaflow.keycloak.url.host}:${jaflow.keycloak.url.port}/realms/${jaflow.keycloak.realm}
+          issuer-uri: ${jaflow.keycloak.url.protocol}://${jaflow.keycloak.url.host}:${jaflow.keycloak.url.port}/${jaflow.keycloak.url.directory}/realms/${jaflow.keycloak.realm}
 
   datasource:
     url: jdbc:postgresql://${jaflow.postgres.url.host}:${jaflow.postgres.url.port}/${jaflow.postgres.url.database.workflow.name}
     username: ${jaflow.postgres.url.database.workflow.username}
     password: ${jaflow.postgres.url.database.workflow.password}
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
       ddl-auto: update
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
 
-
+#springdoc:
+#  swagger-ui:
+#    url: "./v3/api-docs"
+#    config-url: "./../v3/api-docs/swagger-config"
 
 # Used by Swagger
 info:

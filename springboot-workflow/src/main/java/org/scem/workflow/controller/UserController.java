@@ -31,6 +31,12 @@ public class UserController {
         return LightUserDto.from(principal);
     }
 
+    @GetMapping("/test")
+    public LightUserDto test(@AuthenticationPrincipal OidcUser principal) {
+        return LightUserDto.from(principal);
+    }
+
+
     //@RolesAllowed("ADMIN")	JSR-250 standard, nécessite @EnableMethodSecurity(jsr250Enabled = true).
     @GetMapping("/test/admin")
     @PreAuthorize("hasRole('BASIC:ADMIN')")	// JSR-250 standard, nécessite @EnableMethodSecurity(jsr250Enabled = true).

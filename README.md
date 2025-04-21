@@ -49,6 +49,15 @@ The **Angular** web client used to interact with the workflow engine through a u
 
 ---
 
+### Configuration
+
+#### DNS  resolution
+
+##### Windows
+
+
+
+
 
 ## Links
 

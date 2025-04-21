@@ -16,4 +16,8 @@ public class Service {
    private List<String> ports;
    @SuppressWarnings({"java:S116","java:S117"}) // Non-compliant field naming (Sonar rule ID)
    private List<String> depends_on;
+   private String restart;
+   private HealthCheck healthcheck;
+   private List<String> networks;
+   private Build build;
 }
