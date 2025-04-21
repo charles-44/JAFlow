@@ -1,6 +1,7 @@
 # Configuration de base de données
 server:
   port: ${jaflow.workflow.url.port}
+  url: http://localhost:8000${jaflow.workflow.url.context.path}
   servlet:
     context-path: ${jaflow.workflow.url.context.path}
 
